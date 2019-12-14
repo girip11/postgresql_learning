@@ -1,0 +1,34 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "[markdown]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": true
+      }
+    },
+    "editor.tabSize": 2,
+    "editor.fontSize": 16,
+    "terminal.integrated.rendererType": "dom",
+
+    "emeraldwalk.runonsave": {
+      "commands": [
+        // {
+        //   "match": "\\.sql$",
+        //   "cmd": "pg_format -o '${file}' '${file}'",
+        //   "isAsync": false
+        // }
+      ]
+    },
+
+   "git.autorefresh": true,
+
+    "shellcheck.enable": true,
+    "shellcheck.useWorkspaceRootAsCwd": true,
+    "shellcheck.run": "onSave",
+    "shellformat.flag": "-i 2 -ci -sr -bn"
+  }
+}
