@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "DavidAnson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "bierner.github-markdown-preview",
+    "bierner.markdown-checkbox",
+    "bierner.markdown-emoji",
+    "bierner.markdown-preview-github-styles",
+    "bierner.markdown-yaml-preamble",
+    "bradymholt.pgformatter",
+    "timonwong.shellcheck",
+    "foxundermoon.shell-format",
+    "marcostazi.VS-code-vagrantfile",
+    "michelemelluso.gitignore"
+  ]
+}
