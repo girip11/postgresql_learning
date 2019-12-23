@@ -21,7 +21,7 @@ function configure_postgresql() {
   postgresql_conf="$postgresql_conf_path/postgresql.conf"
 
   if [[ -s $postgresql_conf ]]; then
-    listen_addresses=$(grep 'listen_addresses' <"$postgresql_conf")
+    listen_addresses=$(grep 'listen_addresses' < "$postgresql_conf")
 
     if [[ ${listen_addresses:0:1} == '#' ]]; then
       uncommented=${listen_addresses:1}
@@ -37,7 +37,7 @@ function configure_postgresql() {
   # host  all  all  0.0.0.0/0 md5
   pg_hba_conf="$postgresql_conf_path/pg_hba.conf"
   pattern="^host[[:space:]]*all[[:space:]]*all[[:space:]]*[[:space:]]*127.0.0.1/32[[:space:]]*md5$"
-  search=$(grep -x "$pattern" <"$pg_hba_conf")
+  search=$(grep -x "$pattern" < "$pg_hba_conf")
 
   if [[ -n $search ]]; then
     replace=${search/127.0.0.1\/32/0.0.0.0\/0}
