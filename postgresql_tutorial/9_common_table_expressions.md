@@ -2,7 +2,7 @@
 
 ## CTE Syntax
 
-* CTE - temporary result set
+* CTE - temporary result set. Results stored as temp table in memory. As the name states, use it only when an expression repeats multiple times in a query, otherwise for simple queries using CTE leads to performance hit.
 
 * **column_list** following CTE_NAME is optional. If no column list is provided, all the columns from the CTE query definition will be available.
 
@@ -21,7 +21,7 @@ SQL_STATEMENT;
 
 ## Examples
 
-* Simple CTE example
+* Simple CTE examples
 
 ```SQL
 -- create a rate category on films based on the rental rate
@@ -103,3 +103,4 @@ ORDER BY
 
 * [Postgresql Common Table Expressions](http://www.postgresqltutorial.com/postgresql-cte/)
 * [Postgresql recursive query](http://www.postgresqltutorial.com/postgresql-recursive-query/)
+* [`WITH` queries](https://www.postgresql.org/docs/9.1/queries-with.html)

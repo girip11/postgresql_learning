@@ -4,6 +4,8 @@
 
 * Syntax is very similar to `CASE` statement in **ruby programming language**
 
+* This syntax applies when used inside the postgresql queries only.
+
 ```SQL
 CASE
   WHEN expr_1 THEN result_1

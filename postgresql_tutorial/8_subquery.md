@@ -20,6 +20,8 @@ WHERE
 
 ## Subquery with `IN` operator
 
+* IN operator works with either a list of values or with a subquery. If we have an array, we can use `SELECT UNNEST(array)` to convert array in to rows and then can be used with `IN`
+
 * Subquery returning a list of values
 
 ```SQL
@@ -255,3 +257,4 @@ ORDER BY
 * [Postgresql `ANY`](http://www.postgresqltutorial.com/postgresql-any/)
 * [Postgresql `ALL`](http://www.postgresqltutorial.com/postgresql-all/)
 * [Postgresql `EXISTS`](http://www.postgresqltutorial.com/postgresql-exists/)
+* [Postgresql `IN`](https://www.postgresqltutorial.com/postgresql-in/)
