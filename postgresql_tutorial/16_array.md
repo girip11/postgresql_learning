@@ -11,6 +11,9 @@ CREATE TABLE film (
   categories text[]
 );
 
+-- we can also use curly braces
+-- Notice that when you use curly braces, you use single quotes '
+-- to wrap the array and double quotes " to wrap text array items.
 INSERT INTO film (name, categories) values
 ( 'Action', ARRAY ['Action', 'Drama'] ),
 ( 'Kong', '{"Action", "Thriller"}' );
@@ -53,6 +56,22 @@ FROM
   film
 WHERE
   'Action' IN (SELECT unnest(categories));
+```
+
+## Updating the arrays
+
+```Sql
+-- updating individual entry
+UPDATE contacts
+SET phones [ 2 ] = '(408)-589-5843'
+WHERE
+  id = 3;
+  
+-- updating entire array
+UPDATE contacts
+SET phones = ARRAY ['(408)-589-5843']
+WHERE
+  id = 3;
 ```
 
 ---

@@ -2,12 +2,35 @@
 
 Subquery - query nested inside another query
 
+* Subquery in the `SELECT` statement
+
+```Sql
+SELECT
+  *
+FROM (
+  SELECT
+    title,
+    release_year,
+    rental_rate
+  FROM
+    film
+  WHERE
+    rating != 'R') AS film
+WHERE
+  rental_rate >= (
+    SELECT
+      MAX(rental_rate)
+    FROM
+      film);
+```
+
 * Subquery returning a single value
 
 ```SQL
 -- find all films with maximum rental rate
 SELECT
-  title rental_rate
+  title,
+  rental_rate
 FROM
   film
 WHERE

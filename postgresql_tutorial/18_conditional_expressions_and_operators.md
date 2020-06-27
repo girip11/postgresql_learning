@@ -85,10 +85,10 @@ FROM
 
 ```SQL
 SELECT
-  CAST ('100' AS INT) as int_value;
+  CAST ('100' AS INTEGER) as int_value;
 
 SELECT
-  CAST ('98.6' AS FLOAT) as body_temperature;
+  CAST ('98.6' AS REAL) as body_temperature;
 -- or
 SELECT
   CAST ('98.6' AS DOUBLE PRECISION) as body_temperature;
@@ -113,6 +113,7 @@ SELECT
 * Used to return default values in cases where an expression can evaluate to `NULL`
 
 ```SQL
+-- returns 500
 SELECT COALESCE(NULL, 1 - NULL, (100 * 5))
 
 -- if description is NULL, return description as **NOT AVAILABLE**
@@ -131,8 +132,10 @@ FROM
 * Useful in handling division by zero cases.
 
 ```SQL
+-- returns NULL
 SELECT NULLIF(1, 1);
 
+-- returns 1
 SELECT NULLIF(1, 0);
 
 -- if description is '' or NULL, return description as **NOT AVAILABLE**
