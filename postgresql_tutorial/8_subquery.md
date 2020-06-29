@@ -276,7 +276,6 @@ ORDER BY
 ## References
 
 * [Postgresql Subquery](http://www.postgresqltutorial.com/postgresql-subquery/)
-
 * [Postgresql `ANY`](http://www.postgresqltutorial.com/postgresql-any/)
 * [Postgresql `ALL`](http://www.postgresqltutorial.com/postgresql-all/)
 * [Postgresql `EXISTS`](http://www.postgresqltutorial.com/postgresql-exists/)

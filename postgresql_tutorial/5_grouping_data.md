@@ -56,6 +56,7 @@ FROM
   payment;
 
 -- Using date function to get the key for group by
+-- we can also cast a timestamp to date using the cast function
 SELECT
   DATE(payment_date) AS paid_date,
   SUM(amount) AS total_amount

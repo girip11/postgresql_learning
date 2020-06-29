@@ -336,3 +336,31 @@ SELECT
 
 SELECT
   'n'::boolean;
+
+SELECT
+  payment.customer_id,
+  amount
+FROM
+  payment
+  INNER JOIN (
+    SELECT
+      customer_id,
+      max(payment_date) AS latest_payment_date
+    FROM
+      payment
+    GROUP BY
+      customer_id
+    ORDER BY
+      customer_id) AS latest_payment ON payment.customer_id = latest_payment.customer_id
+  AND payment.payment_date = latest_payment.latest_payment_date
+ORDER BY
+  customer_id;
+
+SELECT DISTINCT ON (customer_id)
+  customer_id,
+  amount
+FROM
+  payment
+ORDER BY
+  customer_id,
+  payment_date DESC;

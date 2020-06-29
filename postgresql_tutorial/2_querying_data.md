@@ -109,7 +109,7 @@ ORDER BY
   customer_id;
 
 -- In distinct ON, distinct values on the expression column
--- is taken and for each such value, exactly on value from
+-- is taken and for each such value, exactly one value from
 -- the column2 is taken
 SELECT DISTINCT ON (staff_id)
   staff_id,
@@ -119,6 +119,49 @@ FROM
 ORDER BY
   staff_id,
   customer_id;
+```
+
+* In `DISTINCT ON (expr)`, first the rows are grouped by the expression given to ON. Next the rows are ordered by the `ORDER BY` clause. Once the rows are sorted, the specified columns are selected from the result
+
+```Sql
+-- Reference: https://www.geekytidbits.com/postgres-distinct-on/
+-- Suppose we wanted to query the amount paid by every customer made
+-- on their most recent transaction
+
+-- Solution -1: using groupby and join
+SELECT
+  payment.customer_id,
+  amount
+FROM
+  payment
+  INNER JOIN (
+    SELECT
+      customer_id,
+      max(payment_date) AS latest_payment_date
+    FROM
+      payment
+    GROUP BY
+      customer_id
+    ORDER BY
+      customer_id) AS latest_payment ON payment.customer_id = latest_payment.customer_id
+  AND payment.payment_date = latest_payment.latest_payment_date
+ORDER BY
+  customer_id;
+
+-- Concise solution can be arrived using distinct on
+-- NOTE: `SELECT DISTINCT ON expressions` must match initial `ORDER BY` expressions
+-- any expression given to distinct on should be used in order by as well
+SELECT DISTINCT ON (customer_id)
+  customer_id,
+  amount
+FROM
+  payment
+ORDER BY
+  customer_id,
+  payment_date DESC;
+-- EXPLANATION: Put the logs into groups unique by customer_id (`ON (customer_id)`),
+-- sort each of these groups by most recent (ORDER BY customer_id, payment_date DESC) and
+-- then return fields for the first record in each of these groups (customer_id, amount).
 ```
 
 ---

@@ -8,9 +8,12 @@
     "[markdown]": {
       "editor.codeActionsOnSave": {
         "source.fixAll.markdownlint": true
-      }
+      },
+      "editor.wordWrap": "wordWrapColumn"
     },
     "editor.tabSize": 2,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
     "editor.fontSize": 16,
     "terminal.integrated.rendererType": "dom",
 
@@ -24,7 +27,7 @@
       ]
     },
 
-   "git.autorefresh": true,
+    "git.autorefresh": true,
 
     "shellcheck.enable": true,
     "shellcheck.useWorkspaceRootAsCwd": true,

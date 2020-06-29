@@ -174,7 +174,7 @@ Following are exclusive to postgresql
 * `~~*` is equivalent to `ILIKE`
 * `!~~*` is equivalent to `NOT ILIKE`
 
-## `ISNULL` operator
+## `IS NULL` operator
 
 * NULL is not a value. NULL cannot be compared with any other value. `NULL = NULL` expression yields false. **You should never compare a column to NULL using `=`**. You should use the `IS NULL` and `IS NOT NULL` operators.
 
