@@ -364,3 +364,13 @@ FROM
 ORDER BY
   customer_id,
   payment_date DESC;
+
+INSERT INTO student (name, age, course)
+  VALUES ('John', 23, DEFAULT);
+
+UPDATE
+  student
+SET
+  ta = DEFAULT
+WHERE
+  ta IS NULL;

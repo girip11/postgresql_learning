@@ -127,7 +127,7 @@ SELECT
     f1.length
 FROM
     film f1
-INNER JOIN film f2 ON f1.film_id != f2.film_id AND f1. length = f2. length;
+INNER JOIN film f2 ON f1.film_id != f2.film_id AND f1.length = f2.length;
 -- We can also do the above query using cross join
 -- and filtering out same film ids. Use Explain statement to see
 -- the performance of self vs cross join.
