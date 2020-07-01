@@ -39,6 +39,8 @@ INSERT INTO student (name, age, course, ta)
 
 -- Assume we have a table called teaching_assistant id, name, course
 -- this is an example of populating rows from another table.
+-- In this case the number of columns in the selected table should
+-- match the columns mentioned in the INSERT INTO clause
 INSERT INTO teaching_assistant (name, course)
 SELECT name, course
 FROM student

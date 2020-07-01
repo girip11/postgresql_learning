@@ -1,8 +1,12 @@
 # Common Table Expressions (CTE)
 
+> A useful property of WITH queries is that they are evaluated only once per execution of the parent query, even if they are referred to more than once by the parent query or sibling WITH queries. Thus, expensive calculations that are needed in multiple places can be placed within a WITH query to avoid redundant work. Another possible application is to prevent unwanted multiple evaluations of functions with side-effects -[Postgresql CTE docs](https://www.postgresql.org/docs/10/static/queries-with.html)
+
 ## CTE Syntax
 
-* CTE - temporary result set. Results stored as temp table in memory. As the name states, use it only when an expression repeats multiple times in a query, otherwise for simple queries using CTE leads to performance hit.
+* CTE - temporary result set. Results stored as temp table in memory. As the name states, use it only when an expression repeats multiple times in a query, otherwise for simple queries using **CTE leads to performance hit**.
+
+* It’s just important to be aware, especially in PostgreSQL, that CTEs are materialized.
 
 * **column_list** following CTE_NAME is optional. If no column list is provided, all the columns from the CTE query definition will be available.
 
@@ -104,3 +108,5 @@ ORDER BY
 * [Postgresql Common Table Expressions](http://www.postgresqltutorial.com/postgresql-cte/)
 * [Postgresql recursive query](http://www.postgresqltutorial.com/postgresql-recursive-query/)
 * [`WITH` queries](https://www.postgresql.org/docs/9.1/queries-with.html)
+* [Postgresql CTE](https://medium.com/@hakibenita/be-careful-with-cte-in-postgresql-fca5e24d2119)
+* [CTE explained](https://info.crunchydata.com/blog/with-queries-present-future-common-table-expressions)
