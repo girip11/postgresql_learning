@@ -2,14 +2,18 @@
 
 ## DECLARATION
 
-* Syntax: `text[]` for array of text. Similarly `integer[]` for array of integers.
+* Syntax: `text[]` for array of text. Similarly `INT[]` for array of integers.
 
 ```SQL
 CREATE TABLE film (
   id serial PRIMARY KEY,
   name varchar(50) NOT NULL,
-  categories text[]
+  categories text[] SET DEFAULT '{}'
 );
+
+-- I can also set default for the array using the below syntax
+ALTER TABLE student
+  ALTER COLUMN courses SET DEFAULT ARRAY[]::varchar[];
 
 -- we can also use curly braces
 -- Notice that when you use curly braces, you use single quotes '
@@ -63,7 +67,7 @@ WHERE
 ```Sql
 -- updating individual entry
 UPDATE contacts
-SET phones [ 2 ] = '(408)-589-5843'
+SET phones[2] = '(408)-589-5843'
 WHERE
   id = 3;
   
