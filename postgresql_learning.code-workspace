@@ -29,6 +29,12 @@
 
     "git.autorefresh": true,
 
+    "markdownlint.ignore": ["**/*.md.html"],
+    "files.insertFinalNewline": true,
+    "files.associations": {
+      "*.md.html": "markdown"
+    },
+
     "shellcheck.enable": true,
     "shellcheck.useWorkspaceRootAsCwd": true,
     "shellcheck.run": "onSave",

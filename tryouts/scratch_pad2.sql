@@ -374,3 +374,21 @@ SET
   ta = DEFAULT
 WHERE
   ta IS NULL;
+
+SELECT
+  CAST('HelloWorld' AS char(5));
+
+SELECT
+  CAST('1000.282' AS numeric(5, 1));
+
+SELECT
+  unnest(ARRAY[100.21, 'NAN']) AS numbers
+ORDER BY
+  numbers DESC;
+
+CREATE TABLE table_name (
+  joining_date date NOT NULL DEFAULT CURRENT_DATE
+);
+
+ALTER TABLE student
+  ALTER COLUMN courses SET DEFAULT ARRAY[]::varchar[];
