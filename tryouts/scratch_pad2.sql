@@ -392,3 +392,22 @@ CREATE TABLE table_name (
 
 ALTER TABLE student
   ALTER COLUMN courses SET DEFAULT ARRAY[]::varchar[];
+
+SELECT
+  kvpair -> 'key1' AS value1
+FROM
+  test_table;
+
+SELECT
+  kvpair -> 'key1' AS value1
+FROM
+  test_table;
+
+SELECT
+  name,
+  svals (kvpair)
+FROM
+  test_table;
+
+SELECT
+  hstore_to_json ('"key1" => 1, "key2" => 2'::hstore) AS j;
