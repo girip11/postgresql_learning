@@ -1,8 +1,6 @@
-# Data types in Postgresql
+# User defined data types
 
-## User defined data types
-
-### `CREATE DOMAIN`
+## `CREATE DOMAIN`
 
 * Domain is a data type with optional constraints like `NOT NULL`, `CHECK` etc.
 
@@ -34,7 +32,7 @@ INSERT INTO student (name, gender)
 * Domain can be updated using `ALERT DOMAIN` and deleted using `DROP DOMAIN`.
 * `\dD` - psql command to list all the domains
 
-### `CREATE TYPE`
+## `CREATE TYPE`
 
 > The CREATE TYPE statement allows you to create a **composite type**, which can be use as the return type of a function.
 
