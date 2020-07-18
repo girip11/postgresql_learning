@@ -8,7 +8,7 @@
 CREATE TABLE film (
   id serial PRIMARY KEY,
   name varchar(50) NOT NULL,
-  categories text[] SET DEFAULT '{}'
+  categories text[] DEFAULT '{}'
 );
 
 -- I can also set default for the array using the below syntax

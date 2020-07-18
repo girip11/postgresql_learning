@@ -12,7 +12,7 @@ CREATE TABLE <table_name>(
 
 ```Sql
 INSERT INTO <table_name> (json_col)
-VALUES ('{"name": "John", "age": 25');
+VALUES ('{"name": "John", "age": 25}');
 ```
 
 ## Querying JSON data
@@ -54,7 +54,7 @@ FROM orders;
 
 * `json_each_text()` - key value pairs as text of outermost JSON.
 
-* `json_object_keys()` - set of keys of outermost JSON object.
+* `json_object_keys()` - set of keys of outermost JSON object as separate rows.
 
 * `json_typeof()` function returns type of the outermost JSON value as a string. It can be number, boolean, null, object, array, and string.
 
@@ -69,12 +69,59 @@ SELECT JSON_EACH_TEXT('{"name": "John", "age": 25}');
 
 ## JSONB
 
-* Binary representation of JSON data.
+* Data is stored in the binary form.
+* `jsonb` supports indexing (`json` doesnot), faster to process compared to `json` type.
+* JSON types incur heavy performance penalty when aggregating data(`COUNT`, `SUM`, `AVG` etc)
+
+## Useful functions
+
+* `jsonb_array_elements_text(jsonb_col -> 'array_field')` - Expands each array element in to its own row.
+
+* Array contains using `@>`
+
+```Sql
+-- Notice the array is also type casted to jsonb
+-- Both sides of arrays should be of jsonb type
+SELECT '["Fiction", "Thriller", "Horror"]'::jsonb @> '["Fiction", "Horror"]'::jsonb;
+
+SELECT data->'title' FROM books WHERE data->'genres' @> '["Fiction"]'::jsonb;
+
+-- checking top level objects
+SELECT '{"book": {"title": "War and Peace"}}'::jsonb @> '{"book": {}}'::jsonb;  
+```
+
+* Contains a key check is done similar to that of hstore using `?` operator.
+
+```Sql
+-- String exists as array element:
+SELECT '["foo", "bar", "baz"]'::jsonb ? 'bar'; -- true
+
+-- String exists as object key:
+SELECT '{"foo": "bar"}'::jsonb ? 'foo'; -- true
+
+-- Object values are not considered:
+SELECT '{"foo": "bar"}'::jsonb ? 'bar';  -- yields false
+
+-- As with containment, existence must match at the top level:
+SELECT '{"foo": {"bar": "baz"}}'::jsonb ? 'bar'; -- yields false
+
+-- A string is considered to exist if it matches a primitive JSON string:
+SELECT '"foo"'::jsonb ? 'foo'; --true
+```
+
+## `jsonb` caveats
+
+* Does not preserve leading and trailing whitespace within the json string.
+* Does not preserve the order of the object keys
+* `jsonb` does not store duplicate object keys (stores the last entry)
+
+> The PostgreSQL documentation recommends that most applications should prefer to store JSON data as jsonb.
 
 ---
 
 ## References
 
-* [Postgresql JSON functions](https://www.postgresql.org/docs/current/functions-json.html)
+* [Postgresql JSON functions and operators](https://www.postgresql.org/docs/current/functions-json.html)
 * [PostgreSQL JSON](https://www.postgresqltutorial.com/postgresql-json/)
 * [JSONB](https://www.compose.com/articles/faster-operations-with-the-jsonb-data-type-in-postgresql/)
+* [jsonb Indexing](https://www.postgresql.org/docs/current/datatype-json.html#JSON-INDEXING)

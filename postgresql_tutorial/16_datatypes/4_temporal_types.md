@@ -141,7 +141,7 @@ SELECT NOW() - interval '10 hours ago'
 SELECT justify_days(interval '300 days');
 
 -- 3 days
-SELECT justify_hours(interval '72 days');
+SELECT justify_hours(interval '72 hours');
 
 -- adjusts using above two functions
 -- minus sign works in a different way in this method
@@ -173,7 +173,7 @@ HHMMSS.pppppp
 
 * `LOCALTIME(precision)` - returns the time in current timezone.
 
-* `<time_value> AT TIME ZONE <time_zone_value>` converts the time to the target timezone.
+* `<time_value> AT TIME ZONE <time_zone_value>` converts the time to the target timezone. `timezone(zone, time)` can also be used for conversion.
 
 ```Sql
 SELECT LOCALTIME AT TIME ZONE 'CST';

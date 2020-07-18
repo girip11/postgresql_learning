@@ -72,7 +72,7 @@ SELECT
   kvpair -> 'length' AS value1
 FROM test_table
 WHERE
-  kvpair @> 'height=>30'::hstore;
+  kvpair @> '"height"=>30'::hstore;
 ```
 
 * Fetch all keys using `akeys` and `skeys`and fetch all values using `avals` and `svals`. `akeys` and `avals` return keys and values list as single row while `skeys` and `svals` convert each key or value in the list to its separate column.
@@ -176,3 +176,9 @@ SELECT
 FROM
   test_table;
 ```
+
+---
+
+## References
+
+* [Postgresql Hash store](https://www.postgresqltutorial.com/postgresql-hstore/)
