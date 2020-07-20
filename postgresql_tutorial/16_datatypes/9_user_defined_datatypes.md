@@ -4,29 +4,31 @@
 
 * Domain is a data type with optional constraints like `NOT NULL`, `CHECK` etc.
 
-* Domain name is unique with in the schema scope
+* Domain name is unique with in the schema scope.
 
 * Common usecase: Helps in reusing common contraint against a table column
 
 ```SQL
-CREATE DOMAIN non_empty_string VARCHAR NOT NULL CHECK (value !~ '\s');
+-- creates a data type that cannot be NULL as well as should
+-- not contain any space in its value.
+CREATE DOMAIN Name
+  AS varchar
+  NOT NULL
+  CHECK (value !~ '\s');
 
 CREATE TABLE student (
   id serial PRIMARY KEY,
-  name non_empty_string,
-  gender non_empty_string
+  first_name Name,
+  last_name Name,
+  gender VARCHAR NOT NULL
 );
 
-INSERT INTO student (name, gender)
-  VALUES ('John', 'male');
-
--- Insert will fail since the gender is NULL
-INSERT INTO student (name, gender)
-  VALUES ('Jane', NULL);
+INSERT INTO student (first_name, last_name, gender)
+  VALUES ('Jane', 'Doe', 'male');
 
 -- Insert will fail since the name contains space
-INSERT INTO student (name, gender)
-  VALUES ('Don B', 'male');
+INSERT INTO student (first_name, last_name, gender)
+  VALUES ('John B', 'Doe', 'male');
 ```
 
 * Domain can be updated using `ALERT DOMAIN` and deleted using `DROP DOMAIN`.
@@ -34,7 +36,7 @@ INSERT INTO student (name, gender)
 
 ## `CREATE TYPE`
 
-> The CREATE TYPE statement allows you to create a **composite type**, which can be use as the return type of a function.
+> The CREATE TYPE statement allows you to create a **composite type**, which can be use as the **return type of a function**.
 
 ```SQL
 -- creates a type that encaps name and gender
@@ -55,18 +57,19 @@ CREATE OR REPLACE FUNCTION get_student_summary (st_id int)
     student
   WHERE
     id = st_id;
-
 $$
 LANGUAGE sql;
 
+-- calling the above function
 SELECT
   *
 FROM
   get_student_summary (5);
 ```
 
+* Each field in the type becomes a column in the returned result set.
 * `ALERT TYPE` - to change the type and `DROP TYPE` - to delete the user defined type.
-* `\dT` - psql command to list all the user defined type
+* `\dT` or `\dT+` - psql command to list all the user defined type
 
 ---
 
