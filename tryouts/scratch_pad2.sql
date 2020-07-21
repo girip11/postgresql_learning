@@ -202,3 +202,10 @@ FROM
 
 SELECT
   hstore_to_json ('"key1" => 1, "key2" => 2'::hstore) AS j;
+
+ALTER DOMAIN name
+  ADD CHECK (value !~ '\s'
+    AND length(value) <= 20);
+
+ALTER DOMAIN public.name
+  DROP CONSTRAINT name_check;

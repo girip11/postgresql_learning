@@ -31,12 +31,38 @@ INSERT INTO student (first_name, last_name, gender)
   VALUES ('John B', 'Doe', 'male');
 ```
 
-* Domain can be updated using `ALERT DOMAIN` and deleted using `DROP DOMAIN`.
+* Domain can be updated using [`ALERT DOMAIN`](https://www.postgresql.org/docs/9.4/sql-alterdomain.html) and deleted using `DROP DOMAIN`.
+
+```Sql
+-- remove existing check
+-- check constraints are given a default name of the format
+-- <domain_name>_check
+ALTER DOMAIN public.name
+  DROP CONSTRAINT name_check;
+
+-- add new check
+-- we can also use ADD CONSTRAINT command
+ALTER DOMAIN name
+  ADD CHECK (value !~ '\s'
+    AND length(value) <= 20);
+
+-- For NOT NULL we cannot use ADD/DROP CONSTRAINT
+-- To remove not null constraint
+ALTER DOMAIN public.name
+  DROP NOT NULL;
+
+-- To add the NOT NULL constraint
+ALTER DOMAIN public.name
+  SET NOT NULL;
+```
+
 * `\dD` - psql command to list all the domains
 
 ## `CREATE TYPE`
 
 > The CREATE TYPE statement allows you to create a **composite type**, which can be use as the **return type of a function**.
+
+* Fields inside the type are referred to as **attributes**
 
 ```SQL
 -- creates a type that encaps name and gender
@@ -68,7 +94,23 @@ FROM
 ```
 
 * Each field in the type becomes a column in the returned result set.
-* `ALERT TYPE` - to change the type and `DROP TYPE` - to delete the user defined type.
+* [`ALERT TYPE`](https://www.postgresql.org/docs/9.4/sql-altertype.html) - to change the type and `DROP TYPE` - to delete the user defined type.
+
+```Sql
+ALTER TYPE name action [, ... ]
+ALTER TYPE name OWNER TO new_owner
+ALTER TYPE name RENAME ATTRIBUTE attribute_name TO new_attribute_name [ CASCADE | RESTRICT ]
+ALTER TYPE name RENAME TO new_name
+ALTER TYPE name SET SCHEMA new_schema
+ALTER TYPE name ADD VALUE [ IF NOT EXISTS ] new_enum_value [ { BEFORE | AFTER } existing_enum_value ]
+
+where action is one of:
+
+    ADD ATTRIBUTE attribute_name data_type [ COLLATE collation ] [ CASCADE | RESTRICT ]
+    DROP ATTRIBUTE [ IF EXISTS ] attribute_name [ CASCADE | RESTRICT ]
+    ALTER ATTRIBUTE attribute_name [ SET DATA ] TYPE data_type [ COLLATE collation ] [ CASCADE | RESTRICT ]
+```
+
 * `\dT` or `\dT+` - psql command to list all the user defined type
 
 ---
