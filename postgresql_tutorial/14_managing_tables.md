@@ -14,10 +14,62 @@ CREATE TABLE [IF NOT EXISTS] table_name (
 * Posgresql constraints are `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY` and `FOREIGN KEY`
 * Table constraints involve more than one column, while column constraint involve only that column.
 
+### Using `SELECT INTO`
+
+* Creates a table from the data of another table.
+
+* Besides the `WHERE` clause, you can use other clauses in the SELECT statement for the `SELECT INTO` statement such as `INNER JOIN, LEFT JOIN, GROUP BY, and HAVING`.
+
+**Note**: You **cannot** use the `SELECT INTO` statement in **PL/pgSQL** because they interpret the INTO clause differently
+
+```Sql
+SELECT
+    select_list
+INTO [ TEMPORARY | TEMP | UNLOGGED ] [ TABLE ] new_table_name
+FROM
+    table_name
+WHERE
+    search_condition;
+```
+
+### Using `CREATE TABLE AS`
+
+* Created table will contain the rows returned by the query.
+
+* This statement provides a superset of functionality offered by the `SELECT INTO` statement.
+
+* `CREATE TABLE AS` can be used in **PL\pgsql** without any issues unlike `SELECT INTO`.
+
+```Sql
+-- Syntax
+-- giving column names explicitly is recommended
+CREATE [TEMP|TEMPORARY|UNLOGGED] TABLE [IF NOT EXISTS] new_table_name (col_names_list)
+AS query;
+```
+
+* Example
+
+```Sql
+CREATE TABLE action_film AS
+SELECT
+    film_id,
+    title,
+    release_year,
+    length as film_length,
+    rating
+FROM
+    film
+INNER JOIN film_category USING (film_id)
+WHERE
+    category_id = 1;
+```
+
+**NOTE**: Prefer using `CREATE TABLE AS` to `SELECT INTO`.
+
 ## Altering tables
 
 * Command format - `ALTER TABLE [IF EXISTS] table_name ACTION;`
-* `ALTER TABLE` - can work only on a single table.
+* [`ALTER TABLE`](https://www.postgresql.org/docs/9.4/sql-altertable.html) - can work only on a single table.
 * When you rename a table, PostgreSQL will automatically update its dependent objects such as **foreign key constraints, views, and indexes**.
 
 * Table operations
@@ -36,32 +88,7 @@ ALTER TABLE table_name
 ADD CHECK expression;
 ```
 
-* Column operations
-
-```Sql
--- Adding a column
-ALTER TABLE table_name
-ADD COLUMN column_name data_type column_constraint;
-
--- renaming a column
-ALTER TABLE table_name
-RENAME COLUMN column_name
-TO new_column_name;
-
--- Set or delete default
-ALTER TABLE table_name
-ALTER COLUMN column_name
-[SET DEFAULT value | DROP DEFAULT];
-
--- set or remove NOT NULL constraint
-ALTER TABLE table_name
-ALTER COLUMN column_name
-[SET NOT NULL| DROP NOT NULL];
-
--- Deleting a column
-ALTER TABLE table_name
-DROP COLUMN column_name;
-```
+* Column operations are covered separately in [managing columns](./14_managing_columns.md)
 
 ## Deleting tables
 
