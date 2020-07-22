@@ -24,3 +24,17 @@ WHERE
   typtype = 'd' -- type is domain
   AND nspname = 'public';
 ```
+
+* Listing all sequences in a namespace
+
+```SQL
+-- this returns all the sequences in a given namespace
+SELECT
+    relname
+FROM
+    pg_class
+JOIN pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+WHERE
+    relkind = 'S' and
+     nspname = 'public';
+```
