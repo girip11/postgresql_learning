@@ -117,6 +117,8 @@ DROP TABLE [IF EXISTS] (table_name1, table_name2, ...) [CASCADE | RESTRICT(defau
 > * In addition, the `TRUNCATE TABLE` statement reclaims the storage right away so you do not have to perform a subsequent `VACUMM` operation, which is useful in case of large tables.
 
 ```Sql
+-- order of this command matters in writing the optionals
+-- I cannot place cascade before restart|continue identity
 TRUNCATE TABLE (table_name1, table_name2, ...)
 [[RESTART|CONTINUE(default)] IDENTITY] [CASCADE];
 ```

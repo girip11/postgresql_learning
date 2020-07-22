@@ -115,13 +115,15 @@ ADD GENERATED [ALWAYS | BY DEFAULT] AS IDENTITY [( sequence_option)];
 ALTER COLUMN column_name
 [ SET GENERATED [ALWAYS| BY DEFAULT] |
 SET sequence_option |
-RESTART [[ WITH]restart]  ]
+RESTART [ [WITH] restart] ]
 
 -- remove identity
 ALTER TABLE table_name
 ALTER COLUMN column_name
 DROP IDENTITY [ IF EXISTS ]
 ```
+
+* Sequence options can be found in [sequences](14_sequence.md)
 
 ---
 
