@@ -79,14 +79,16 @@ DROP CONSTRAINT constraint_fkey;
 
 ```Sql
 CREATE TABLE table_name (
-  column_name datatype UNIQUE,
+  column_name datatype [CONSTRAINT constraint_name] UNIQUE,
   ...
   -- table level constraint
   -- the column value combinations should be unique
-  UNIQUE(column1, column2)
+  [CONSTRAINT constraint_name] UNIQUE(column1, column2)
 );
 
 -- adding unique constraint using unique index
+-- This achieves the same effect as making a column
+-- unique while creating the table
 CREATE UNIQUE INDEX CONCURRENTLY unique_index_name
 ON table_name(column_name);
 
@@ -94,7 +96,7 @@ ON table_name(column_name);
 -- associated to the table using ALTER TABLE
 -- This adds a table level constraint
 ALTER TABLE table_name
-ADD CONSTRAINT constraint_name UNIQUE
+ADD [ CONSTRAINT constraint_name ] UNIQUE
 USING INDEX unique_index_name;
 ```
 
