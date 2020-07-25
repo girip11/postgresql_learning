@@ -8,10 +8,12 @@ DECLARE
     var_name type := value;
 BEGIN
     -- body of the block
+    -- This statement is used to break out of this block
+    EXIT block_label
 END block_label;
 ```
 
-* label and declare section are optional
+* Label and declare section are **optional**. A label is only needed if you want to identify the block for use in an `EXIT` statement, or to qualify the names of the variables declared in the block.
 
 * Every declaration statement is terminated with **;**. Similarly every statement in the body too.
 
@@ -19,7 +21,21 @@ END block_label;
 
 * `DO` statement is used for executing the blocks
 
-* Enclosing string between `$[token]$` is equivalent to single quoted strings. Helps to avoid escaping single quotes inside a single quoted string.
+* Enclosing string between `$[token]$` is equivalent to enclosing the content within single quotes
+
+```Sql
+-- escaping single quotes inside string
+SELECT 'I''m also a string constant';
+SELECT E'I\'m also a string constant';
+
+-- using $$
+-- No escaping required for single quotes and backslashes
+SELECT $$I'm also a string constant with a backslash \ $$;
+-- using optional tag( can be anything)
+SELECT $tag$I'm also a string constant with a backslash \ $tag$;
+```
+
+* Helps to **avoid escaping single quotes and backslashes** inside a single quoted string.
 
 ```sql
 DO $block$
@@ -27,11 +43,11 @@ DO $block$
 DECLARE
   op1 integer := 10;
   op2 integer := 30;
-  sum_val integer := 10;
+  sum_val integer := 0;
 BEGIN
   sum_val := op1 + op2;
   RAISE NOTICE 'Sum of % and % is %', op1, op2, sum_val;
-END simple_block
+END simple_block;
 $block$;
 ```
 
@@ -43,12 +59,13 @@ $block$;
 
 ```sql
 DO $block$
-  << outer_block >>
+<< outer_block >>
 DECLARE
   msg VARCHAR := 'Hello';
 BEGIN
   raise notice 'Message is %', msg;
 
+  -- inner block
   DECLARE
     msg VARCHAR := 'Hi';
   BEGIN
@@ -56,14 +73,14 @@ BEGIN
     raise notice 'Inside the subblock, Outer block message is %', outer_block.msg;
   END;
 
-END outer_block
+END outer_block;
 $block$;
 ```
 
 ## Variables
 
 * All variables should be declared in the `DECLARE` section.
-* Variable declaratiion syntax - `var_name var_type [:= expr]`
+* Variable declaration syntax - `var_name var_type [:= expr]`
 * By default the variable is assigned `NULL`
 * Data type can be any of the postgresql data type
 
@@ -73,7 +90,7 @@ DECLARE
   name VARCHAR(20) := 'John Doe';
 BEGIN
   RAISE NOTICE 'Name is %', name;
-END
+END;
 $$;
 ```
 
@@ -89,7 +106,7 @@ DECLARE
 BEGIN
   first_name := (select customer.first_name from customer where customer.customer_id = block.customer_id);
   RAISE NOTICE 'First Name of customer with id % is %', customer_id, first_name;
-END block
+END block;
 $$;
 ```
 
@@ -116,16 +133,28 @@ BEGIN
   RAISE NOTICE 'Current time is %', NOW();
   -- Number of % should match the arguments
   RAISE NOTICE 'Length of % is %', 'Hello', LENGTH('HELLO');
-END
+END;
 $$;
 ```
 
 * `client_min_messages` and `log_min_messages` configuration parameters control the current log level that can be displayed.
 
-## Raising exception
+## [Raising exception](https://www.postgresql.org/docs/12/plpgsql-errors-and-messages.html)
 
-* Syntax - `RAISE EXCEPTION MSG_FORMAT USING option = expr`
-* option in (MESSAGE, HINT, DETAIL, ERRCODE)
+* Syntax
+
+```Sql
+RAISE [ level ] 'format' [, expression [, ... ]] [ USING option = expression [, ... ] ];
+
+RAISE [ level ] condition_name [ USING option = expression [, ... ] ];
+
+RAISE [ level ] SQLSTATE 'sqlstate' [ USING option = expression [, ... ] ];
+
+-- option can be one of (MESSAGE, HINT, DETAIL, ERRCODE)
+RAISE [ level ] USING option = expression [, ... ];
+
+RAISE ;
+```
 
 ```sql
 DO $$
@@ -144,11 +173,11 @@ BEGIN
 
   CASE
     WHEN first_name IS NULL THEN
-      RAISE exception 'First name of customer is null' USING MESSAGE = 'Customer not found';
+      RAISE exception 'First name of customer is null' USING HINT = 'Customer name should not be NULL';
     ELSE
       RAISE NOTICE 'First Name of customer with id % is %', customer_id, first_name;
   END CASE;
-END block
+END block;
 $$;
 ```
 

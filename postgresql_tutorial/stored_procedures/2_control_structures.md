@@ -2,7 +2,7 @@
 
 ## `IF` statement
 
-* Syntax is very similar to the one in Ruby language.
+* Syntax is very similar to the one in **Ruby** language, except that the IF ends withs `END IF`
 
 ```SQL
 IF condition_1 THEN
@@ -73,13 +73,22 @@ END LOOP;
 
 ## `FOR` loop
 
-```SQL
+### Iterate over a range
+
+```Sql
+-- Syntax
+[ <<label>> ]
+FOR name IN [ REVERSE ] expression .. expression [ BY expression ] LOOP
+    statements
+END LOOP [ label ];
+
+-- Examples
 DO $$
   BEGIN
     FOR c IN 1..5 LOOP
       RAISE NOTICE 'Value: %', c;
     END LOOP;
-  END
+  END;
 $$;
 
 -- To increment by more than 1
@@ -89,7 +98,7 @@ DO $$
     FOR c IN 1..15 BY 3 LOOP
       RAISE NOTICE 'Value: %', c;
     END LOOP;
-  END
+  END;
 $$;
 
 -- To iterate reverse
@@ -98,8 +107,20 @@ DO $$
     FOR c IN REVERSE 5..1 LOOP
       RAISE NOTICE 'Value: %', c;
     END LOOP;
-  END
+  END;
 $$;
+```
+
+### Iterate over array
+
+```Sql
+-- Syntax
+--  The SLICE value must be an integer constant not larger
+-- than the number of dimensions of the array.
+[ <<label>> ]
+FOREACH target [ SLICE number ] IN ARRAY expression LOOP
+    statements
+END LOOP [ label ];
 
 -- iterate through arrays using foreach
 DO $$
@@ -111,9 +132,43 @@ DO $$
     LOOP
       RAISE NOTICE 'Value: %', c;
     END LOOP;
-  END
+  END;
 $$;
 
+-- using slice in case of multidimensional arrays
+DO $$
+  DECLARE
+    arr integer[] := ARRAY[[1,2,3],[4,5,6],[7,8,9],[10,11,12]];
+    c integer[];
+  BEGIN
+    FOREACH c SLICE 1 IN ARRAY arr
+    LOOP
+      RAISE NOTICE 'Value: %', c;
+    END LOOP;
+  END;
+$$;
+```
+
+### Query execution syntax
+
+```Sql
+-- iterating over query results
+-- Query can be select, update, insert or delete
+[ <<label>> ]
+FOR target IN query LOOP
+    statements
+END LOOP [ label ];
+
+-- Using a query as text and passing parameters to the query
+[ <<label>> ]
+FOR target IN EXECUTE text_expression [ USING expression [, ... ] ] LOOP
+    statements
+END LOOP [ label ];
+```
+
+* Examples
+
+```SQL
 -- Looping through query result
 -- each row will be stored in row variable
 DO $$
@@ -123,11 +178,12 @@ DO $$
     FOR row IN (SELECT first_name || ' ' || last_name as name FROM customer where customer_id >=10 and customer_id <= 50) LOOP
       RAISE NOTICE 'Customer name: %', row.name;
     END LOOP;
-  END
+  END;
 $$;
 
 
--- Loop through the results of dynamically executed query from a string parameter
+-- Loop through the results of dynamically executed query
+-- from a string parameter
 -- Query on the dvdrental database
 -- `USING` statement to pass parameters to the query
 DO $$
@@ -141,17 +197,15 @@ BEGIN
   FROM
     customer
   WHERE
-    customer_id >= 10
-    AND customer_id <= 50
-  LIMIT $1
+    customer_id between $1 and $2
   $query$;
+
   FOR ROW IN EXECUTE query
-  USING 20 LOOP
+  USING 10, 20 LOOP
     RAISE NOTICE 'Customer name: %', row.name;
   END LOOP;
-END
+END;
 $$;
-
 ```
 
 ---
