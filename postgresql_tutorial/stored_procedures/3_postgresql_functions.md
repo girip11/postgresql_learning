@@ -1,14 +1,16 @@
 # Postgresql Functions
 
-* Syntax
+* [SQL functions vs Postgresql functions](https://stackoverflow.com/questions/24755468/difference-between-language-sql-and-language-plpgsql-in-postgresql-functions)
+
+* Syntax of plpgsql function
 
 ```sql
 CREATE OR REPLACE FUNCTION function_name(param1 type, param2 type) RETURNS type AS
 $$
 BEGIN
-END
+END;
 $$
-LANGUAGE language_name
+LANGUAGE language_name;
 ```
 
 * Languages could be **plpgsql**,**sql** etc (or other language like python if the respective extension is installed)
@@ -50,9 +52,9 @@ END;
 $BODY$;
 
 -- invoking the above functions
-select get_customer_name_from_id(5);
+select get_customer_name(5);
 
-select get_customer_name_from_id('elizabeth.brown@sakilacustomer.org');
+select get_customer_name('elizabeth.brown@sakilacustomer.org');
 ```
 
 * `\df` command in psql to view the created functions.
@@ -251,7 +253,10 @@ SELECT get_url ('www.example.com', 3000, 'https');
 
 ## Function Returning A Table
 
-* Use `RETURN TABLE`
+* Use `RETURNS TABLE`. `RETURNS SETOF` also serves similar purpose, but there is a slight [difference between them](https://stackoverflow.com/questions/22423958/sql-function-return-type-table-vs-setof-records).
+
+* Use `RETURNS SETOF` when we want to return list of [custom type](../16_datatypes/9_user_defined_datatypes.md) created.
+
 * Returned table column types should match the table column data types declared to be returned.
   
 ```SQL
@@ -327,6 +332,7 @@ FROM
 
 ## References
 
+* [Postgresql SQL fucntions](https://www.postgresql.org/docs/12/xfunc-sql.html)
 * [Postgresql functions](https://www.postgresqltutorial.com/postgresql-create-function/)
 * [Function parameters](https://www.postgresqltutorial.com/postgresql-stored-procedures/)
 * [Function Overloading](https://www.postgresqltutorial.com/plpgsql-function-overloading/)
