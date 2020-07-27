@@ -1,0 +1,37 @@
+# Reference: https://www.vagrantup.com/docs/provisioning/shell.html
+
+$script = <<-SCRIPT
+pacman -Syu --noconfirm \
+&& pacman -S --noconfirm gcc make glibc binutils bison m4 gdb curl postgresql util-linux
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "archlinux/archlinux"
+  config.vm.box_version = "2020.06.03"
+  config.vm.box_check_update = true
+
+  config.ssh.insert_key = false
+  config.vm.define "pgsql-arch" do |pg_arch_vm|
+    pg_arch_vm.vm.hostname = "pgsql-arch"
+    pg_arch_vm.vm.network "public_network", bridge: "eno1"
+
+    pg_arch_vm.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.memory = 4_096
+      vb.cpus = 2
+    end
+  end
+
+  config.vm.provision "shell", inline: $script
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+end
