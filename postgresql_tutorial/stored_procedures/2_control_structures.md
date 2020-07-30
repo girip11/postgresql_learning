@@ -47,6 +47,62 @@ CASE
 END CASE;
 ```
 
+* [**`CASE` statement vs `CASE` expression**](https://stackoverflow.com/questions/12436859/case-expression-vs-case-statement). `CASE` expression can return just the value and **no semicolon** required at the end of each `WHEN/ELSE` clause. `CASE` expression ends with `END` and statement ends with `END CASE`. Only `CASE` construct has both expression and statement forms while `IF..ELSE` has only statement form.
+
+```Sql
+-- Notice the syntax difference between case expression and case statement
+-- This is an example of case expression
+DO $$
+DECLARE
+  result int := -1;
+  rating film.rating % TYPE;
+BEGIN
+  rating := (
+    SELECT
+      f.rating
+    FROM
+      film AS f
+    WHERE
+      f.film_id = 100);
+  RAISE notice 'rating %', rating;
+  result := (
+    CASE WHEN rating::varchar LIKE 'PG' THEN
+      1
+    WHEN rating = 'R' THEN
+      5
+    ELSE
+      3
+    END);
+  RAISE notice 'result: %', result;
+END;
+$$;
+
+-- This is an example of case statement
+DO $$
+DECLARE
+  result int := -1;
+  rating film.rating % TYPE;
+BEGIN
+  rating := (
+    SELECT
+      f.rating
+    FROM
+      film AS f
+    WHERE
+      f.film_id = 100);
+  RAISE notice 'rating %', rating;
+  CASE WHEN rating::varchar LIKE 'PG' THEN
+    result := 1;
+  WHEN rating = 'R' THEN
+    result := 5;
+  ELSE
+    result := 3;
+  END CASE;
+  RAISE notice 'result: %', result;
+END;
+$$;
+```
+
 ## `LOOP` statement
 
 * Similar to a `do-while` loop
@@ -191,6 +247,9 @@ DECLARE
   ROW RECORD;
   query TEXT;
 BEGIN
+  -- Donot use the same $$ here for query text, it will raise error
+  -- every nested use of $$ should be different for parser to identify opening
+  -- closing matches.
   query := $query$
   SELECT
     first_name || ' ' || last_name AS name
@@ -212,6 +271,7 @@ $$;
 
 ## References
 
+* [Postgresql control structures documentation](https://www.postgresql.org/docs/9.1/plpgsql-control-structures.html)
 * [Case statement](https://www.postgresqltutorial.com/plpgsql-case-statement/)
 * [If statement](https://www.postgresqltutorial.com/plpgsql-if-else-statements/)
 * [Loop statements](https://www.postgresqltutorial.com/plpgsql-loop-statements/)

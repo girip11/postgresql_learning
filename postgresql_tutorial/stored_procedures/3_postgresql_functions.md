@@ -60,7 +60,7 @@ select get_customer_name('elizabeth.brown@sakilacustomer.org');
 * `\df` command in psql to view the created functions.
 * By default (if no schema is specified explicitly), the functions get created in to the **public** schema.
 
-* `DROP FUNCTION <function_name>` deletes the function definition.
+* `DROP FUNCTION [ IF EXISTS ] <function_name>` deletes the function definition.
 
 ## `IN` parameters
 
