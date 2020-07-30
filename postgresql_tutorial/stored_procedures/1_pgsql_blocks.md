@@ -35,6 +35,8 @@ SELECT $$I'm also a string constant with a backslash \ $$;
 SELECT $tag$I'm also a string constant with a backslash \ $tag$;
 ```
 
+**NOTE**: Every nested use of `$$` should be different for the parser to identify opening and closing matches. That is one of the reasons why we can add an identifier like text inside `$...$`. Hence giving names like `$block$` for enclosing blocks, `$query$` for enclosing SQL query will make the code more readable.
+
 * Helps to **avoid escaping single quotes and backslashes** inside a single quoted string.
 
 ```sql
@@ -50,6 +52,8 @@ BEGIN
 END simple_block;
 $block$;
 ```
+
+* Avoid naming the block labels and variable names using reserved keywords. This will raise error.
 
 ## Subblocks
 

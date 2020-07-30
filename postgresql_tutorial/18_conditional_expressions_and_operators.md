@@ -3,8 +3,7 @@
 ## `CASE` expression
 
 * Syntax is very similar to `CASE` statement in **ruby programming language**
-
-* This syntax applies when used inside the postgresql queries only.
+* This syntax applies only when `CASE` is used as an [expression and not a statement](https://stackoverflow.com/questions/12436859/case-expression-vs-case-statement).
 
 ```SQL
 CASE
@@ -151,6 +150,7 @@ FROM
 
 ## References
 
+* [Postgresql conditional expressions](https://www.postgresql.org/docs/9.1/functions-conditional.html)
 * [Postgresql `CAST`](http://www.postgresqltutorial.com/postgresql-cast/)
 * [Postgresql `CASE`](http://www.postgresqltutorial.com/postgresql-case/)
 * [Postgresql `COALESCE`](http://www.postgresqltutorial.com/postgresql-coalesce/)
