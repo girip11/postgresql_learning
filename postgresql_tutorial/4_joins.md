@@ -1,6 +1,6 @@
 # Joins
 
-* Join condition can be any simple or complex(combined using logical operators) boolean condition.
+- Join condition can be any simple or complex(combined using logical operators) boolean condition.
 
 ```Sql
 -- syntax
@@ -19,7 +19,7 @@ NATURAL [INNER | LEFT | RIGHT]] JOIN right_table AS rt ON (join_condition);
 
 ## Inner join
 
-* Rows that satisfy the join condition are fetched from both left and right tables and combined to a single row.
+- Rows that satisfy the join condition are fetched from both left and right tables and combined to a single row.
 
 ```Sql
 SELECT
@@ -30,7 +30,7 @@ FROM
   INNER JOIN language AS l ON f.language_id = l.language_id;
 ```
 
-* We can do join on 3 or more tables as well
+- We can do join on 3 or more tables as well
 
 ```Sql
 -- join involving 3 tables
@@ -61,7 +61,7 @@ FROM
 
 ## Left outer join
 
-* Rows that satisfy the join condition as well as that don't satisfy are fetched from only the left table. For the rows that don't satisfy the join condition, columns of right side table will contain **NULL**
+- Rows that satisfy the join condition as well as that don't satisfy are fetched from only the left table. For the rows that don't satisfy the join condition, columns of right side table will contain **NULL**
 
 ```Sql
 -- movies that are not in store 1
@@ -96,7 +96,7 @@ WHERE
 
 ## Full outer join
 
-* Better example found at [postgresqltutorial.com](https://www.postgresqltutorial.com/postgresql-full-outer-join/)
+- Better example found at [postgresqltutorial.com](https://www.postgresqltutorial.com/postgresql-full-outer-join/)
 
 ```Sql
 -- select payments that don't have a customer
@@ -143,8 +143,8 @@ INNER JOIN film f2 ON f1.film_id != f2.film_id AND f1.length = f2.length;
 
 ## Cross Join
 
-* **Cartesian product** of all the rows in both the tables.
-* Huge resulting set. Causes performance issues. Use it sparsely.
+- **Cartesian product** of all the rows in both the tables.
+- Huge resulting set. Causes performance issues. Use it sparsely.
 
 ```Sql
 -- cross join between movie categories and languages
@@ -162,11 +162,11 @@ CROSS JOIN ( SELECT DISTINCT
 
 ## Natural join
 
-* A natural join is a join that creates an implicit join based on the same column names in the joined tables.
+- A natural join is a join that creates an implicit join based on the same column names in the joined tables.
 
-* **Recommendation is to avoid natural joins** as it may lead to unexpected result. Suppose a new column with same name added to a table in join statement. Now we will have the natural join trying to join on the new column name as well.
+- **Recommendation is to avoid natural joins** as it may lead to unexpected result. Suppose a new column with same name added to a table in join statement. Now we will have the natural join trying to join on the new column name as well.
 
-* With natural join, we can perform **left, right and inner** joins.
+- With natural join, we can perform **left, right and inner** joins.
 
 ```Sql
 -- inner join using language_id
@@ -185,7 +185,7 @@ NATURAL JOIN (
       language) AS l;
 ```
 
-* If `*` is used to select all the columns from natural join, columns with common names will be present only once. This is not the case with other joins when used with **ON** condition.
+- If `*` is used to select all the columns from natural join, columns with common names will be present only once. This is not the case with other joins when used with **ON** condition.
 
 ```Sql
 -- The result set will contain two language_id columns
@@ -205,8 +205,18 @@ FROM
   INNER JOIN language  as l USING (language_id);
 ```
 
+## Additional Joins popular in big data frameworks
+
+- Semi join - Fetch only the rows of the left side table that satisfies join the condition.
+- Difference between inner join and semi join is, in inner join a row will contain columns from both left and right tables that have join condition satisfied, while in semi join a row contains columns only from the left table.
+
+- Anti Join - Return only those rows from the left table that don't satisfy the join condition.
+
+**NOTE**- We don't have keywords in SQL that support anti and semi join natively, but we could implement queries performing these joins using operators like `IN`, `EXISTS`.
+
 ---
 
 ## References
 
-* [Postgresql joins](https://www.postgresqltutorial.com/postgresql-joins/)
+- [Postgresql joins](https://www.postgresqltutorial.com/postgresql-joins/)
+- [Anti join and semi join](https://blog.jooq.org/2015/10/13/semi-join-and-anti-join-should-have-its-own-syntax-in-sql/)
